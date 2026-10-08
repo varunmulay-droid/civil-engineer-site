@@ -3,23 +3,22 @@ import { Edges } from "@react-three/drei";
 import { useRef } from "react";
 import { seg, isMobile } from "../motion/easings.js";
 
-const AMBER = "#D78B3D";
 const G = [-2, 0, 2];
 const LV = [1.4, 2.8, 4.2, 5.6];
 const out = (t) => 1 - Math.pow(1 - t, 3);
 
-function Skin({ w, h, d, y, op = 0.9 }) {
+function Skin({ w, h, d, y, op = 0.9, ac, fill }) {
   return (
     <mesh position={[0, y, 0]}>
       <boxGeometry args={[w, h, d]} />
-      <meshStandardMaterial color="#26282b" roughness={0.9} metalness={0.1} transparent opacity={op} />
-      <Edges color={AMBER} threshold={15} />
+      <meshStandardMaterial color={fill} roughness={0.9} metalness={0.1} transparent opacity={op} />
+      <Edges color={ac} threshold={15} />
     </mesh>
   );
 }
 
-function Building({ progress }) {
-  const slab = useRef(), roof = useRef(), glass = useRef(), cam = useRef();
+function Building({ progress, ac, fill, gridA, gridB }) {
+  const slab = useRef(), roof = useRef(), glass = useRef();
   const cols = useRef([]), floors = useRef([]);
   useFrame(({ camera }) => {
     const p = progress.current;
@@ -31,28 +30,30 @@ function Building({ progress }) {
     const a = -0.75 + p * 1.5, rad = isMobile() ? 17 : 13;
     camera.position.set(Math.sin(a) * rad, 4.2 + p * 1.6, Math.cos(a) * rad); camera.lookAt(0, 2.5, 0);
   });
+  const k = { ac, fill };
   return (
     <>
-      <group ref={slab}><Skin w={7.6} h={0.4} d={7.6} y={-0.2} /></group>
+      <group ref={slab}><Skin w={7.6} h={0.4} d={7.6} y={-0.2} {...k} /></group>
       {G.flatMap((x, i) => G.map((z, j) => (
-        <group key={`${i}${j}`} position={[x, 0, z]} ref={(el) => (cols.current[i * 3 + j] = el)}><Skin w={0.34} h={5.6} d={0.34} y={2.8} /></group>
+        <group key={`${i}${j}`} position={[x, 0, z]} ref={(el) => (cols.current[i * 3 + j] = el)}><Skin w={0.34} h={5.6} d={0.34} y={2.8} {...k} /></group>
       )))}
-      {LV.map((y, i) => (<group key={y} position={[0, y, 0]} ref={(el) => (floors.current[i] = el)}><Skin w={6.4} h={0.18} d={6.4} y={0} op={0.7} /></group>))}
-      <group ref={roof} position={[0, 5.95, 0]}><Skin w={7.2} h={0.26} d={7.2} y={0} /></group>
+      {LV.map((y, i) => (<group key={y} position={[0, y, 0]} ref={(el) => (floors.current[i] = el)}><Skin w={6.4} h={0.18} d={6.4} y={0} op={0.7} {...k} /></group>))}
+      <group ref={roof} position={[0, 5.95, 0]}><Skin w={7.2} h={0.26} d={7.2} y={0} {...k} /></group>
       <mesh ref={glass} position={[0, 2.85, 0]}><boxGeometry args={[6.4, 5.7, 6.4]} /><meshBasicMaterial color="#9fc4d8" transparent opacity={0} depthWrite={false} /></mesh>
-      <gridHelper args={[26, 26, "#4a4337", "#1d1f21"]} position={[0, -0.41, 0]} />
+      <gridHelper args={[26, 26, gridA, gridB]} position={[0, -0.41, 0]} />
     </>
   );
 }
 
-export default function ConstructionModel({ progress, active }) {
+export default function ConstructionModel({ progress, active, theme }) {
+  const fill = theme.light ? "#d9d3c7" : "#26282b";
   return (
     <Canvas frameloop={active ? "always" : "never"} dpr={[1, isMobile() ? 1.25 : 1.75]} camera={{ fov: 32, position: [8, 5, 13] }} gl={{ antialias: true, powerPreference: "high-performance" }}>
-      <fog attach="fog" args={["#0B0C0D", 16, 34]} />
-      <ambientLight intensity={0.55} />
+      <fog attach="fog" args={[theme.bg, 16, 34]} />
+      <ambientLight intensity={theme.light ? 0.9 : 0.55} />
       <directionalLight position={[6, 9, 5]} intensity={1.5} />
-      <pointLight position={[-6, 3, -4]} intensity={30} color={AMBER} />
-      <Building progress={progress} />
+      <pointLight position={[-6, 3, -4]} intensity={30} color={theme.ac} />
+      <Building progress={progress} ac={theme.ac} fill={fill} gridA={theme.ac} gridB={theme.surf} />
     </Canvas>
   );
 }

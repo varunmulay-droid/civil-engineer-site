@@ -1,10 +1,13 @@
 import { useLayoutEffect, useMemo, useRef } from "react";
 import { gsap, reduced, fallbackImage } from "../motion/easings.js";
+import { useTheme } from "../theme.jsx";
+import VideoBg from "./VideoBg.jsx";
 
 export default function Hero({ photos }) {
   const root = useRef();
-  const fb = useMemo(() => fallbackImage(7), []);
-  const img = photos.hero?.src || fb;
+  const { theme } = useTheme();
+  const fb = useMemo(() => fallbackImage(7, 0, theme), [theme.id]);
+  const img = photos.hero?.src || photos.video?.poster || fb;
   useLayoutEffect(() => {
     if (reduced()) return;
     const ctx = gsap.context(() => {
@@ -40,8 +43,8 @@ export default function Hero({ photos }) {
         <div className="hero-cta hero-fade"><a href="#build" className="cta">See how we build</a><a href="#contact" className="ghost">Talk to an engineer</a></div>
       </div>
       <figure className="hero-frame">
-        <div className="inner" style={{ backgroundImage: `url(${img})` }} role="img" aria-label={photos.hero?.alt || "Modern concrete architecture"} />
-        <figcaption className="mono">FIG. 01 — {photos.hero ? `Photo ${photos.hero.credit} / Pexels` : "Elevation study"}</figcaption>
+        <div className="inner" style={{ backgroundImage: `url(${img})` }} role="img" aria-label={photos.hero?.alt || "Modern concrete architecture"}><VideoBg src={photos.video?.src} poster={photos.video?.poster} /></div>
+        <figcaption className="mono">FIG. 01 — {photos.video ? `Video ${photos.video.credit} / Pexels` : photos.hero ? `Photo ${photos.hero.credit} / Pexels` : "Elevation study"}</figcaption>
       </figure>
       <ul className="hero-stats hero-fade">
         <li><b>25+</b><span className="mono">Years</span></li><li><b>148</b><span className="mono">Projects</span></li><li><b>12</b><span className="mono">Cities</span></li>

@@ -3,6 +3,7 @@ import { ScrollTrigger } from "./motion/easings.js";
 import Nav from "./components/Nav.jsx"; import Hero from "./components/Hero.jsx"; import Manifesto from "./components/Manifesto.jsx";
 import Signature from "./components/Signature.jsx"; import Projects from "./components/Projects.jsx"; import Materials from "./components/Materials.jsx";
 import Process from "./components/Process.jsx"; import BeforeAfter from "./components/BeforeAfter.jsx"; import Stats from "./components/Stats.jsx";
+import Reel from "./components/Reel.jsx"; import Cursor from "./components/Cursor.jsx"; import ThemeSwitcher from "./components/ThemeSwitcher.jsx";
 import Testimonials from "./components/Testimonials.jsx"; import Contact from "./components/Contact.jsx";
 
 export default function App() {
@@ -17,11 +18,11 @@ export default function App() {
     <>
       <Nav />
       <main>
-        <Hero photos={photos} /><Manifesto /><Signature /><Projects photos={photos} ready={ready} />
+        <Hero photos={photos} /><Manifesto /><Reel photos={photos} /><Signature /><Projects photos={photos} ready={ready} />
         <Materials /><Process /><BeforeAfter photos={photos} /><Stats /><Testimonials /><Contact />
       </main>
       <footer className="mono">© {new Date().getFullYear()} Sahyadri Structures · Photography via <a href="https://www.pexels.com" target="_blank" rel="noreferrer">Pexels</a></footer>
-      <div className="cursor" aria-hidden="true">VIEW</div>
+      <Cursor /><ThemeSwitcher />
     </>
   );
 }

@@ -1,11 +1,12 @@
 import { lazy, Suspense, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { gsap, ScrollTrigger, seg, reduced, canWebGL } from "../motion/easings.js";
 import { stages } from "../data.js";
+import { useTheme } from "../theme.jsx";
 const Model = lazy(() => import("../three/ConstructionModel.jsx"));
 
 export default function Signature() {
   const root = useRef(), progress = useRef(0), pct = useRef(), bar = useRef();
-  const [gl, setGl] = useState(false), [on, setOn] = useState(false);
+  const [gl, setGl] = useState(false), [on, setOn] = useState(false), { theme } = useTheme();
   useEffect(() => { setGl(canWebGL() && !reduced()); }, []);
   useLayoutEffect(() => {
     const el = root.current; const paths = [...el.querySelectorAll(".bp path")];
@@ -28,7 +29,7 @@ export default function Signature() {
   }, []);
   return (
     <section id="build" className="sig" ref={root} data-stage="0">
-      <div className="sig-gl">{gl && <Suspense fallback={null}><Model progress={progress} active={on} /></Suspense>}</div>
+      <div className="sig-gl">{gl && <Suspense fallback={null}><Model progress={progress} active={on} theme={theme} /></Suspense>}</div>
       <svg className="bp" viewBox="0 0 400 300" aria-hidden="true">
         <path d="M40 260 H360" /><path d="M60 260 V60 H340 V260" /><path d="M60 110 H340" /><path d="M60 160 H340" /><path d="M60 210 H340" />
         <path d="M150 60 V260" /><path d="M250 60 V260" /><path d="M40 60 L200 20 L360 60" />

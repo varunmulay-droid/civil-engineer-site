@@ -25,3 +25,16 @@ export const process = [
   { t: "Finishing", d: "Envelope, services and interiors executed by our own trained crews." },
   { t: "Handover", d: "Compliance, documentation and a defects window that we stand behind." },
 ];
+export const stages = ["Concept", "Structure", "Construction", "Completion"];
+export const materials = [
+  { k: "Concrete", grade: "M40 – M50", use: "Frames, slabs, foundations", note: "Mix designs cube-tested at 7 and 28 days." },
+  { k: "Steel", grade: "Fe 550D TMT", use: "Reinforcement, spans, trusses", note: "Mill certificates traced to every pour." },
+  { k: "Glass", grade: "Low-E double glazed", use: "Facades, skylights", note: "Thermal and acoustic performance specified per elevation." },
+  { k: "Timber", grade: "Seasoned teak / engineered", use: "Interiors, joinery", note: "Moisture-controlled and treated before install." },
+  { k: "Stone", grade: "Basalt / Kota", use: "Cladding, flooring, landscape", note: "Selected in-quarry against approved samples." },
+];
+export const quotes = [
+  { q: "The team turned a complex project into a clear, controlled build.", who: "R. Deshmukh", meta: "Riverfront Residence / Nashik" },
+  { q: "Every drawing we signed off is exactly what stands on site today.", who: "A. Kulkarni", meta: "Meridian Business Park / Mumbai" },
+  { q: "They flagged a foundation risk in week one that saved us months.", who: "S. Patil", meta: "Godavari Span Bridge / Nashik" },
+];

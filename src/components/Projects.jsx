@@ -6,7 +6,7 @@ const Liquid = lazy(() => import("../three/LiquidSlider.jsx"));
 
 export default function Projects({ photos, ready }) {
   const [i, setI] = useState(0), [on, setOn] = useState(false), [gl, setGl] = useState(false);
-  const root = useRef(), cur = useRef(), sx = useRef(0);
+  const root = useRef(), cur = useRef(), sx = useRef(0), { theme } = useTheme();
   useEffect(() => { setGl(canWebGL() && !reduced()); }, []);
   useEffect(() => { const io = new IntersectionObserver(([e]) => setOn(e.isIntersecting)); io.observe(root.current); return () => io.disconnect(); }, []);
   const fb = useMemo(() => projects.map((_, k) => fallbackImage(k + 2, k % 2, theme)), [theme.id]);

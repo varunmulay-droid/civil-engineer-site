@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: civil-engineer-site
+    runtime: node
+    plan: free
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    healthCheckPath: /healthz
+    envVars:
+      - key: NODE_VERSION
+        value: 20
+      - key: PEXELS_API_KEY
+        sync: false   # Render will prompt for this value during Blueprint setup
